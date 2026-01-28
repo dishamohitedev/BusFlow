@@ -167,7 +167,6 @@ void bookseat()
         printf("Invalid Seat Number.\n");
         return;
     }
-
     if (buses[index].seats[seatNo - 1] == 1)
     {
         printf("Seat already booked.\n");
@@ -179,10 +178,88 @@ void bookseat()
     }
 }
 
+int generateticketid()
+{
+    static int id = 1000;
+    return id++;
+}
+
+void seatchoiceandfare()
+{
+    int busNo, index = -1;
+    int choice, seatNo = -1;
+    printf("\n Enter Bus Number for seat selection: ");
+    scanf("%d", &busNo);
+    for (int i = 0; i < buscount; i++)
+    {
+        if (buses[i].busno == busNo)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+    {
+        printf("Invalid Bus Number.\n");
+        return;
+    }
+    printf("\nSeat Choice:");
+    printf("\n1. Manual");
+    printf("\n2. Auto");
+    printf("\nEnter choice: ");
+    scanf("%d", &choice);
+    if (choice == 1)
+    {
+        showseats(index);
+        printf("\nEnter Seat Number: ");
+        scanf("%d", &seatNo);
+        if (seatNo < 1 || seatNo > buses[index].totalseats)
+        {
+            printf("Invalid seat number.\n");
+            return;
+        }
+        else if (buses[index].seats[seatNo - 1] == 1)
+        {
+            printf("Seat already booked.\n");
+            return;
+        }
+    }
+    else if (choice == 2)
+    {
+        for (int i = 0; i < buses[index].totalseats; i++)
+        {
+            if (buses[index].seats[i] == 0)
+            {
+                seatNo = i + 1;
+                break;
+            }
+        }
+        if (seatNo == -1)
+        {
+            printf("No seats available.\n");
+            return;
+        }
+        printf("Auto-selected Seat Number: %d\n", seatNo);
+    }
+    else
+    {
+        printf("Invalid choice.\n");
+        return;
+    }
+    buses[index].seats[seatNo - 1] = 1;
+    int ticketID = generateticketid();
+    int fare = buses[index].fare;
+    printf("\n----- TEMP TICKET -----\n");
+    printf("Ticket ID   : %d\n", ticketID);
+    printf("Bus Number  : %d\n", buses[index].busno);
+    printf("Seat Number : %d\n", seatNo);
+    printf("Fare        : %d\n", fare);
+}
+
 void main() 
 {
     initBuses();
     displayBuses();
     searchbus();
-    bookseat();
+    seatchoiceandfare();
 }
