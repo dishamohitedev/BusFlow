@@ -2,6 +2,7 @@
 #include <string.h>
 
 void toLowerCase(char str[]);
+void collectPassengerData();
 
 struct Bus 
 {
@@ -12,6 +13,13 @@ struct Bus
     int totalseats;
     int fare;
     int seats[80];   
+};
+struct Passenger
+{
+    char name[100];
+    int age;
+    int gender; 
+    int emergency;  
 };
 
 struct Bus buses[5];
@@ -256,10 +264,25 @@ void seatchoiceandfare()
     printf("Fare        : %d\n", fare);
 }
 
+void collectPassengerData()
+{
+    struct Passenger p;
+    printf("\nEnter Passenger Name: ");
+    getchar();
+    scanf("%[^\n]", p.name);
+    printf("Enter Passenger Age: ");
+    scanf("%d", &p.age);
+    printf("Enter Gender (1 = Female, 0 = Male): ");
+    scanf("%d", &p.gender);
+    printf("Emergency Case? (1 = Yes, 0 = No): ");
+    scanf("%d", &p.emergency);
+}
+
 void main() 
 {
     initBuses();
     displayBuses();
     searchbus();
     seatchoiceandfare();
+    collectPassengerData();
 }
