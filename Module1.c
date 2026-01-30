@@ -1,9 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 
+enum Priority
+{
+  DISABLED = 1,
+  EMERGENCY,
+  PREGNANT,
+  SENIOR,
+  NORMAL
+};
+struct Passenger;
 void toLowerCase(char str[]);
-void collectPassengerData();
-
+struct Passenger collectPassengerData();
+enum Priority decidePriority(struct Passenger p);
+void getSeatRange(enum Priority p, int *start, int *end);
+int seatchoice(struct Passenger p);
 struct Bus 
 {
   int busno;
@@ -25,6 +36,7 @@ struct Passenger
 struct Bus buses[5];
 int buscount = 0;
 int selectedBusIndex = -1;
+int bookedSeatNumber = -1;
 
 void initBuses() 
 {
@@ -95,7 +107,6 @@ void toLowerCase(char str[])
     i++;
   }
 }
-
 int searchbus()
 {
   char sour[100],dest[100],date[12];
@@ -189,10 +200,11 @@ int generateticketid()
   static int id = 1000;
   return id++;
 }
-int seatchoiceandfare()
-{
+int seatchoice(struct Passenger p)
+{ 
   int busNo, index = -1;
   int choice, seatNo = -1;
+  enum Priority pr = decidePriority(p);
   printf("\n Enter Bus Number for seat selection: ");
   scanf("%d", &busNo);
   if (selectedBusIndex == -1)
@@ -226,26 +238,28 @@ int seatchoiceandfare()
       printf("Invalid seat number.\n");
       return 0;
     }
-    else if (buses[index].seats[seatNo - 1] == 1)
+    if (pr == NORMAL && seatNo <= 8)
     {
-      printf("Seat already booked.\n");
+      printf("Reserved seat: cannot be selected.\n");
       return 0;
     }
   }
   else if (choice == 2)
   {
-    for (int i = 0; i < buses[index].totalseats; i++)
+    int start, end;
+    getSeatRange(pr, &start, &end);
+    for (int i = start; i <= end; i++)
     {
-      if (buses[index].seats[i] == 0)
+      if (buses[index].seats[i - 1] == 0)
       {
-        seatNo = i + 1;
+        seatNo = i;
         break;
       }
     }
     if (seatNo == -1)
     {
-      printf("No seats available.\n");
-      return 0;
+        printf("No seats available in your priority range.\n");
+        return 0;
     }
     printf("Auto-selected Seat Number: %d\n", seatNo);
   }
@@ -254,20 +268,15 @@ int seatchoiceandfare()
     printf("Invalid choice.\n");
     return 0;
   }
-  buses[index].seats[seatNo - 1] = 1;
-  int ticketID = generateticketid();
-  int fare = buses[index].fare;
-  printf("\n----- TEMP TICKET -----\n");
-  printf("Ticket ID   : %d\n", ticketID);
-  printf("Bus Number  : %d\n", buses[index].busno);
-  printf("Seat Number : %d\n", seatNo);
-  printf("Fare        : %d\n", fare);
+  bookedSeatNumber = seatNo;
   return 1;
 }
 
-void collectPassengerData()
+struct Passenger collectPassengerData()
 {
   struct Passenger p;
+  int Pregnant = 0;
+  int Disabled = 0;
   printf("\nEnter Passenger Name: ");
   getchar();
   scanf("%[^\n]", p.name);
@@ -275,8 +284,72 @@ void collectPassengerData()
   scanf("%d", &p.age);
   printf("Enter Gender (1 = Female, 0 = Male): ");
   scanf("%d", &p.gender);
+  if (p.gender == 1)
+  {
+    printf("Is the passenger pregnant? (1 = Yes, 0 = No):");
+    scanf("%d", &Pregnant);
+  }
+  printf("Is the passenger disabled? (1 = Yes, 0 = No): ");
+  scanf("%d", &Disabled);
   printf("Emergency Case? (1 = Yes, 0 = No): ");
   scanf("%d", &p.emergency);
+  if (Disabled == 1)
+  {
+    p.gender = 2;
+  }
+  else if (Pregnant == 1)
+  {
+    p.gender = 3; 
+  }
+  return p;
+}
+
+enum Priority decidePriority(struct Passenger p)
+{
+  if (p.gender == 2)
+  {
+    return DISABLED;
+  }
+  else if (p.emergency == 1)
+  {
+    return EMERGENCY;
+  }
+  else if (p.gender == 3)
+  {
+    return PREGNANT;
+  }
+  else if (p.age >= 60)
+  {
+    return SENIOR;
+  }
+  else
+  {
+    return NORMAL;
+  }
+}
+void getSeatRange(enum Priority p, int *start, int *end)
+{
+  if (p == DISABLED)
+  {
+    *start = 1; *end = 2;
+  }
+  else if (p == EMERGENCY)
+  {
+    *start = 3; *end = 4;
+  }
+  else if (p == PREGNANT)
+  {
+    *start = 5; *end = 6;
+  }
+  else if (p == SENIOR)
+  {
+    *start = 7; *end = 8;
+  }
+  else
+  {
+    *start = 9;
+    *end = buses[selectedBusIndex].totalseats;
+  }
 }
 
 void main() 
@@ -287,9 +360,9 @@ void main()
   {
     return;
   }
-  if (!seatchoiceandfare())
+  struct Passenger p = collectPassengerData();
+  if (!seatchoice(p)) 
   {
     return;
   }
-  collectPassengerData();
 }
