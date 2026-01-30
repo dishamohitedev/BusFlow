@@ -211,25 +211,34 @@ int seatchoice(struct Passenger p)
     printf("Invalid Bus Number.\n");
     return 0;
   }
-  printf("\nSeat Choice:");
-  printf("\n1. Manual");
-  printf("\n2. Auto");
-  printf("\nEnter choice: ");
-  scanf("%d", &choice);
-  if (choice == 1)
+  while(1)
   {
-    showseats(index);
-    printf("\nEnter Seat Number: ");
-    scanf("%d", &seatNo);
-    if (seatNo < 1 || seatNo > buses[index].totalseats)
-    {
+   printf("\nSeat Choice:");
+   printf("\n1. Manual");
+   printf("\n2. Auto");
+   printf("\nEnter choice: ");
+   scanf("%d", &choice);
+   if (choice == 1)
+   {
+     showseats(index);
+     printf("\nEnter Seat Number: ");
+     scanf("%d", &seatNo);
+     if (seatNo < 1 || seatNo > buses[index].totalseats)
+     {
       printf("Invalid seat number.\n");
       return 0;
-    }
-    if (pr == NORMAL && seatNo <= 8)
+     }
+     int start, end;
+     getSeatRange(pr, &start, &end);
+     if (seatNo < start || seatNo > end)
     {
-      printf("Reserved seat: cannot be selected.\n");
-      return 0;
+     printf("Seat not allowed for your priority category.\n");
+     return 0;
+    }
+    if (buses[index].seats[seatNo - 1] == 1)
+    {
+     printf("Seat already booked.\n");
+     return 0;
     }
   }
   else if (choice == 2)
@@ -246,17 +255,22 @@ int seatchoice(struct Passenger p)
     }
     if (seatNo == -1)
     {
-        printf("No seats available in your priority range.\n");
-        return 0;
+      printf("No seats available in your priority range.Try Again \n");
+      continue;
+      return 0;
     }
+    bookedSeatNumber = seatNo;
     printf("Auto-selected Seat Number: %d\n", seatNo);
+    break;
   }
   else
   {
-    printf("Invalid choice.\n");
-    return 0;
+   printf("Invalid choice.\n");
+   return 0;
   }
   bookedSeatNumber = seatNo;
+  break;
+  }
   return 1;
 }
 
