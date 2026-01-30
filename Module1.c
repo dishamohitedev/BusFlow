@@ -91,7 +91,7 @@ void displayBuses()
   printf("\n Available Buses:");
   for (int i = 0; i<buscount; i++) 
   {
-    printf("\n BusNo: %d | %s -> %s | Date:%s | Seats: %d | Fare: %d\n", buses[i].busno, buses[i].source, buses[i].destination,buses[i].date, buses[i].totalseats, buses[i].fare);
+    printf("\n BusNo: %d | %s -> %s | Date:%s | Seats: %d | Fare: %d", buses[i].busno, buses[i].source, buses[i].destination,buses[i].date, buses[i].totalseats, buses[i].fare);
   }
 }
 
@@ -202,21 +202,9 @@ int generateticketid()
 }
 int seatchoice(struct Passenger p)
 { 
-  int busNo, index = -1;
+  int index = -1;
   int choice, seatNo = -1;
   enum Priority pr = decidePriority(p);
-  printf("\n Enter Bus Number for seat selection: ");
-  scanf("%d", &busNo);
-  if (selectedBusIndex == -1)
-  {
-    printf("No bus selected from search.\n");
-    return 0;
-  }
-  if (buses[selectedBusIndex].busno != busNo)
-  {
-    printf("Please select the bus shown in matching results only.\n");
-    return 0;
-  }
   index = selectedBusIndex;
   if (index == -1)
   {
@@ -353,11 +341,19 @@ void getSeatRange(enum Priority p, int *start, int *end)
 }
 
 void main() 
-{
+{ 
   initBuses();
   displayBuses();
   if (!searchbus())
   {
+    return;
+  }
+  int busNo;
+  printf("\nEnter Bus Number: ");
+  scanf("%d", &busNo);
+  if (selectedBusIndex == -1 || buses[selectedBusIndex].busno != busNo)
+  {
+    printf("Invalid bus number selected.\n");
     return;
   }
   struct Passenger p = collectPassengerData();
