@@ -9,12 +9,15 @@ enum Priority
   SENIOR,
   NORMAL
 };
+
 struct Passenger;
 void toLowerCase(char str[]);
 struct Passenger collectPassengerData();
 enum Priority decidePriority(struct Passenger p);
 void getSeatRange(enum Priority p, int *start, int *end);
 int seatchoice(struct Passenger p);
+void showSeatLegend();
+
 struct Bus 
 {
   int busno;
@@ -195,84 +198,163 @@ void bookseat()
   }
 }
 
+void showSeatLegend()
+{
+  printf("\nSeat Reservation Rules:\n");
+  printf("Seats 1-2: Disabled\n");
+  printf("Seats 3-4: Emergency\n");
+  printf("Seats 5-6: Pregnant\n");
+  printf("Seats 7-8: Senior Citizen\n");
+  printf("Seats 9+ : Normal\n");
+}
+
 int generateticketid()
 {
   static int id = 1000;
   return id++;
 }
 int seatchoice(struct Passenger p)
-{ 
-  int index = -1;
-  int choice, seatNo = -1;
-  enum Priority pr = decidePriority(p);
-  index = selectedBusIndex;
-  if (index == -1)
-  {
-    printf("Invalid Bus Number.\n");
-    return 0;
-  }
-  while(1)
-  {
-   printf("\nSeat Choice:");
-   printf("\n1. Manual");
-   printf("\n2. Auto");
-   printf("\nEnter choice: ");
-   scanf("%d", &choice);
-   if (choice == 1)
-   {
-     showseats(index);
-     printf("\nEnter Seat Number: ");
-     scanf("%d", &seatNo);
-     if (seatNo < 1 || seatNo > buses[index].totalseats)
-     {
-      printf("Invalid seat number.\n");
-      return 0;
-     }
-     int start, end;
-     getSeatRange(pr, &start, &end);
-     if (seatNo < start || seatNo > end)
+{
+    int index = selectedBusIndex;
+    enum Priority pr = decidePriority(p);
+
+    if (index == -1)
     {
-     printf("Seat not allowed for your priority category.\n");
-     return 0;
+        printf("Invalid Bus Number.\n");
+        return 0;
     }
-    if (buses[index].seats[seatNo - 1] == 1)
+
+    int seatsRequired;
+    printf("\nEnter number of seats required: ");
+    scanf("%d", &seatsRequired);
+
+    int seatNumbers[10];   // supports up to 10 seats per booking
+
+    while (1)
     {
-     printf("Seat already booked.\n");
-     return 0;
+        int choice;
+        printf("\nSeat Choice:");
+        printf("\n1. Auto");
+        printf("\n2. Manual");
+        printf("\nEnter choice: ");
+        scanf("%d", &choice);
+
+        int start, end;
+        getSeatRange(pr, &start, &end);
+
+        /* ================= AUTO ================= */
+        if (choice == 1)
+        {
+            int count = 0;
+
+            for (int i = start; i <= end && count < seatsRequired; i++)
+            {
+                if (buses[index].seats[i - 1] == 0)
+                {
+                    seatNumbers[count++] = i;
+                }
+            }
+
+            if (count < seatsRequired)
+            {
+                printf("Not enough seats available in your priority range.\n");
+                continue;
+            }
+
+            for (int i = 0; i < seatsRequired; i++)
+            {
+                buses[index].seats[seatNumbers[i] - 1] = 1;
+            }
+
+            printf("Auto-selected Seats: ");
+            for (int i = 0; i < seatsRequired; i++)
+            {
+                printf("%d ", seatNumbers[i]);
+            }
+            printf("\n");
+
+            break;
+        }
+
+        /* ================= MANUAL ================= */
+        else if (choice == 2)
+        {
+            printf("\nSeat Reservation Rules:\n");
+            printf("Seats 1-2  : Disabled\n");
+            printf("Seats 3-4  : Emergency\n");
+            printf("Seats 5-6  : Pregnant\n");
+            printf("Seats 7-8  : Senior Citizen\n");
+            printf("Seats 9+   : Normal\n");
+
+            showseats(index);
+
+            int valid = 1;
+
+            for (int i = 0; i < seatsRequired; i++)
+            {
+                printf("Enter Seat Number %d: ", i + 1);
+                scanf("%d", &seatNumbers[i]);
+
+                if (seatNumbers[i] < 1 || seatNumbers[i] > buses[index].totalseats)
+                {
+                    printf("Invalid seat number.\n");
+                    valid = 0;
+                    break;
+                }
+
+                if (seatNumbers[i] < start || seatNumbers[i] > end)
+                {
+                    printf("Seat %d is reserved for another category.\n", seatNumbers[i]);
+                    valid = 0;
+                    break;
+                }
+
+                if (buses[index].seats[seatNumbers[i] - 1] == 1)
+                {
+                    printf("Seat %d is already booked.\n", seatNumbers[i]);
+                    valid = 0;
+                    break;
+                }
+
+                /* check duplicate seat entry */
+                for (int j = 0; j < i; j++)
+                {
+                    if (seatNumbers[i] == seatNumbers[j])
+                    {
+                        printf("Duplicate seat number entered.\n");
+                        valid = 0;
+                        break;
+                    }
+                }
+                if (!valid) break;
+            }
+
+            if (!valid)
+                continue;
+
+            for (int i = 0; i < seatsRequired; i++)
+            {
+                buses[index].seats[seatNumbers[i] - 1] = 1;
+            }
+
+            printf("Seats booked successfully: ");
+            for (int i = 0; i < seatsRequired; i++)
+            {
+                printf("%d ", seatNumbers[i]);
+            }
+            printf("\n");
+
+            break;
+        }
+        else
+        {
+            printf("Invalid choice.\n");
+        }
     }
-  }
-  else if (choice == 2)
-  {
-    int start, end;
-    getSeatRange(pr, &start, &end);
-    for (int i = start; i <= end; i++)
-    {
-      if (buses[index].seats[i - 1] == 0)
-      {
-        seatNo = i;
-        break;
-      }
-    }
-    if (seatNo == -1)
-    {
-      printf("No seats available in your priority range.Try Again \n");
-      continue;
-      return 0;
-    }
-    bookedSeatNumber = seatNo;
-    printf("Auto-selected Seat Number: %d\n", seatNo);
-    break;
-  }
-  else
-  {
-   printf("Invalid choice.\n");
-   return 0;
-  }
-  bookedSeatNumber = seatNo;
-  break;
-  }
-  return 1;
+
+    return 1;
 }
+
 
 struct Passenger collectPassengerData()
 {
