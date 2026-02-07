@@ -1,20 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
-enum Priority
-{
-  DISABLED = 1,
-  EMERGENCY,
-  PREGNANT,
-  SENIOR,
-  NORMAL
-};
-
 struct Passenger;
 void toLowerCase(char str[]);
 struct Passenger collectPassengerData();
-enum Priority decidePriority(struct Passenger p);
-void getSeatRange(enum Priority p, int *start, int *end);
 int seatchoice();
 void showSeatLegend();
 
@@ -30,10 +19,12 @@ struct Bus
 };
 struct Passenger
 {
-  char name[100];
-  int age;
-  int gender; 
-  int emergency;  
+    char name[100];
+    int age;
+    int gender;        // 1 = Female, 0 = Male
+    int pregnant;      // 1 = Yes, 0 = No
+    int disabled;      // 1 = Yes, 0 = No
+    int emergency;     // 1 = Yes, 0 = No
 };
 
 struct Bus buses[5];
@@ -213,6 +204,18 @@ void showSeatLegend()
   printf("Seats 9+ : Normal\n");
 }
 
+void printAllowedSeats(struct Passenger p)
+{
+    printf("Allowed seats: ");
+
+    if (p.disabled)   printf("1-2 ");
+    if (p.emergency)  printf("3-4 ");
+    if (p.pregnant)   printf("5-6 ");
+    if (p.age >= 60)  printf("7-8 ");
+
+    printf("9+\n");
+}
+
 int generateticketid()
 {
   static int id = 1000;
@@ -227,41 +230,84 @@ int seatchoice()
         printf("Invalid bus.\n");
         return 0;
     }
+
     printf("\n--- Seat Priority Information ---\n");
     showSeatLegend();
+
     int choice;
     printf("\nSeat Choice:\n1. Auto\n2. Manual\nEnter choice: ");
     scanf("%d", &choice);
+
+    /* ================= AUTO ================= */
     if (choice == 1)
     {
         for (int i = 0; i < passengerCount; i++)
         {
-            enum Priority pr = decidePriority(passengers[i]);
-            int start, end;
-            getSeatRange(pr, &start, &end);
             int seatFound = 0;
-            for (int s = start; s <= end; s++)
+
+            /* 1️⃣ Disabled */
+           if (passengers[i].disabled)
             {
-                if (buses[index].seats[s - 1] == 0)
-                {
-                    buses[index].seats[s - 1] = 1;
-                    allocatedSeats[i] = s;
-                    seatFound = 1;
-                    break;
-                }
-            }
-            if (!seatFound)
-            {
-                for (int s = 9; s <= buses[index].totalseats; s++)
-                {
+                for (int s = 1; s <= 2; s++)
                     if (buses[index].seats[s - 1] == 0)
                     {
-                        buses[index].seats[s - 1] = 1;
                         allocatedSeats[i] = s;
+                        buses[index].seats[s - 1] = 1;
                         seatFound = 1;
                         break;
                     }
-                }
+            }
+
+            /* 2️⃣ Emergency */
+            if (!seatFound && passengers[i].emergency == 1)
+            {
+                for (int s = 3; s <= 4; s++)
+                    if (buses[index].seats[s - 1] == 0)
+                    {
+                        allocatedSeats[i] = s;
+                        buses[index].seats[s - 1] = 1;
+                        seatFound = 1;
+                        break;
+                    }
+            }
+
+            /* 3️⃣ Pregnant */
+            if (!seatFound && passengers[i].pregnant)
+            {
+                for (int s = 5; s <= 6; s++)
+                    if (buses[index].seats[s - 1] == 0)
+                    {
+                        allocatedSeats[i] = s;
+                        buses[index].seats[s - 1] = 1;
+                        seatFound = 1;
+                        break;
+                    }
+            }
+
+            /* 4️⃣ Senior Citizen */
+            if (!seatFound && passengers[i].age >= 60)
+            {
+                for (int s = 7; s <= 8; s++)
+                    if (buses[index].seats[s - 1] == 0)
+                    {
+                        allocatedSeats[i] = s;
+                        buses[index].seats[s - 1] = 1;
+                        seatFound = 1;
+                        break;
+                    }
+            }
+
+            /* 5️⃣ Normal (FCFS) */
+            if (!seatFound)
+            {
+                for (int s = 9; s <= buses[index].totalseats; s++)
+                    if (buses[index].seats[s - 1] == 0)
+                    {
+                        allocatedSeats[i] = s;
+                        buses[index].seats[s - 1] = 1;
+                        seatFound = 1;
+                        break;
+                    }
             }
 
             if (!seatFound)
@@ -273,32 +319,38 @@ int seatchoice()
 
         printf("\n--- Seat Allocation Summary (AUTO) ---\n");
         for (int i = 0; i < passengerCount; i++)
-        {
             printf("Passenger %d -> Seat %d\n", i + 1, allocatedSeats[i]);
-        }
 
         return 1;
     }
+
+    /* ================= MANUAL ================= */
     else if (choice == 2)
     {
         showseats(index);
 
         for (int i = 0; i < passengerCount; i++)
         {
-            enum Priority pr = decidePriority(passengers[i]);
-            int start, end;
-            getSeatRange(pr, &start, &end);
-
             int seat;
+
             while (1)
             {
-                printf(
-                    "Passenger %d (Allowed seats: %d-%d or 9+)\nEnter seat: ",
-                    i + 1, start, end
-                );
-                scanf("%d", &seat);
+                printf("Passenger %d (Allowed seats: ", i + 1);
+              if (passengers[i].disabled)   printf("1-2 ");
+              if (passengers[i].emergency)  printf("3-4 ");
+              if (passengers[i].pregnant)   printf("5-6 ");
+              if (passengers[i].age >= 60)  printf("7-8 ");
+              printf("9+)");
+              printf("\n Enter seat: ");
+if (scanf("%d", &seat) != 1)
+{
+    printf("Invalid input. Please enter a number.\n");
 
-                /* Validation */
+    // clear input buffer
+    while (getchar() != '\n');
+
+    continue;
+}
                 if (seat < 1 || seat > buses[index].totalseats)
                 {
                     printf("Invalid seat number.\n");
@@ -310,11 +362,21 @@ int seatchoice()
                     printf("Seat already booked.\n");
                     continue;
                 }
-                if (!((seat >= start && seat <= end) || seat >= 9))
+
+                int allowed = 0;
+                if (passengers[i].disabled  && seat >= 1 && seat <= 2) allowed = 1;
+if (passengers[i].emergency && seat >= 3 && seat <= 4) allowed = 1;
+if (passengers[i].pregnant  && seat >= 5 && seat <= 6) allowed = 1;
+if (passengers[i].age >= 60 && seat >= 7 && seat <= 8) allowed = 1;
+if (seat >= 9) allowed = 1;
+
+
+                if (!allowed)
                 {
                     printf("Seat not allowed for this passenger.\n");
                     continue;
                 }
+
                 buses[index].seats[seat - 1] = 1;
                 allocatedSeats[i] = seat;
                 break;
@@ -323,9 +385,7 @@ int seatchoice()
 
         printf("\n--- Seat Allocation Summary (MANUAL) ---\n");
         for (int i = 0; i < passengerCount; i++)
-        {
             printf("Passenger %d -> Seat %d\n", i + 1, allocatedSeats[i]);
-        }
 
         return 1;
     }
@@ -339,82 +399,35 @@ int seatchoice()
 
 struct Passenger collectPassengerData()
 {
-  struct Passenger p;
-  int Pregnant = 0;
-  int Disabled = 0;
-  printf("\nEnter Passenger Name: ");
-  getchar();
-  scanf("%[^\n]", p.name);
-  printf("Enter Passenger Age: ");
-  scanf("%d", &p.age);
-  printf("Enter Gender (1 = Female, 0 = Male): ");
-  scanf("%d", &p.gender);
-  if (p.gender == 1)
-  {
-    printf("Is the passenger pregnant? (1 = Yes, 0 = No):");
-    scanf("%d", &Pregnant);
-  }
-  printf("Is the passenger disabled? (1 = Yes, 0 = No): ");
-  scanf("%d", &Disabled);
-  printf("Emergency Case? (1 = Yes, 0 = No): ");
-  scanf("%d", &p.emergency);
-  if (Disabled == 1)
-  {
-    p.gender = 2;
-  }
-  else if (Pregnant == 1)
-  {
-    p.gender = 3; 
-  }
-  return p;
-}
+    struct Passenger p;
 
-enum Priority decidePriority(struct Passenger p)
-{
-  if (p.gender == 2)
-  {
-    return DISABLED;
-  }
-  else if (p.emergency == 1)
-  {
-    return EMERGENCY;
-  }
-  else if (p.gender == 3)
-  {
-    return PREGNANT;
-  }
-  else if (p.age >= 60)
-  {
-    return SENIOR;
-  }
-  else
-  {
-    return NORMAL;
-  }
-}
-void getSeatRange(enum Priority p, int *start, int *end)
-{
-  if (p == DISABLED)
-  {
-    *start = 1; *end = 2;
-  }
-  else if (p == EMERGENCY)
-  {
-    *start = 3; *end = 4;
-  }
-  else if (p == PREGNANT)
-  {
-    *start = 5; *end = 6;
-  }
-  else if (p == SENIOR)
-  {
-    *start = 7; *end = 8;
-  }
-  else
-  {
-    *start = 9;
-    *end = buses[selectedBusIndex].totalseats;
-  }
+    printf("\nEnter Passenger Name: ");
+    getchar();
+    scanf("%[^\n]", p.name);
+
+    printf("Enter Passenger Age: ");
+    scanf("%d", &p.age);
+
+    printf("Enter Gender (1 = Female, 0 = Male): ");
+    scanf("%d", &p.gender);
+
+    if (p.gender == 1)
+    {
+        printf("Is the passenger pregnant? (1 = Yes, 0 = No): ");
+        scanf("%d", &p.pregnant);
+    }
+    else
+    {
+        p.pregnant = 0;
+    }
+
+    printf("Is the passenger disabled? (1 = Yes, 0 = No): ");
+    scanf("%d", &p.disabled);
+
+    printf("Emergency Case? (1 = Yes, 0 = No): ");
+    scanf("%d", &p.emergency);
+
+    return p;
 }
 
 void main() 
