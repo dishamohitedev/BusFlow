@@ -438,18 +438,43 @@ int confirmTicket()
   toLowerCase(choice);
   if (strcmp(choice, "y") == 0 || strcmp(choice, "yes") == 0 || strcmp(choice, "1") == 0)
   {
-    printf("\n✅ Ticket Confirmed!\n");
     return 1;   // Go to Module 9
   }
   else if (strcmp(choice, "n") == 0 || strcmp(choice, "no") == 0 || strcmp(choice, "0") == 0)
   {
-    printf("\n❌ Ticket Cancelled");
     return 0;   // Go to Module 10
   }
   else
   {
     printf("\nInvalid input. Ticket NOT confirmed.\n");
   }
+}
+void bookingCompletionDisplay()
+{
+  printf("\n====================================");
+  printf("\n         FINAL TICKET DETAILS");
+  printf("\n====================================");
+  printf("\nTicket ID      : %d", generateticketid());
+  printf("\nBus Number     : %d", buses[selectedBusIndex].busno);
+  printf("\nRoute          : %s -> %s", buses[selectedBusIndex].source, buses[selectedBusIndex].destination);
+  printf("\nDate           : %s", buses[selectedBusIndex].date);
+  printf("\n------------------------------------");
+  for (int i = 0; i < passengerCount; i++)
+  {
+    printf("\nPassenger %d", i + 1);
+    printf("\nName       : %s", passengers[i].name);
+    printf("\nAge        : %d", passengers[i].age);
+    printf("\nSeat No.   : %d", allocatedSeats[i]);
+    printf("\n------------------------------------");
+  }
+  printf("\nTotal Passengers : %d", passengerCount);
+  printf("\nFare per Seat    : %d", buses[selectedBusIndex].fare);
+  printf("\nTotal Fare       : %d", passengerCount * buses[selectedBusIndex].fare);
+  printf("\n====================================");
+  printf("\n✅ BOOKING SUCCESSFUL!");
+  printf("\n🙏 Happy Journey!");
+  printf("\nThank you for choosing our Bus Service.");
+  printf("\n====================================\n");
 }
 
 void main() 
@@ -491,7 +516,7 @@ void main()
   int confirmation = confirmTicket();
   if (confirmation == 1)
   {
-    // MODULE 9 WILL BE CALLED HERE
+    bookingCompletionDisplay(); 
   }
   else
   {
