@@ -19,12 +19,12 @@ struct Bus
 };
 struct Passenger
 {
-    char name[100];
-    int age;
-    int gender;        
-    int pregnant;      
-    int disabled;     
-    int emergency;     
+  char name[100];
+  int age;
+  int gender;        
+  int pregnant;      
+  int disabled;     
+  int emergency;     
 };
 
 struct Bus buses[5];
@@ -201,32 +201,32 @@ void showSeatLegend()
 }
 void printAllowedSeats(struct Passenger p)
 {
-    printf("Allowed seats: ");
-    if (p.disabled)   printf("1-2 ");
-    if (p.emergency)  printf("3-4 ");
-    if (p.pregnant)   printf("5-6 ");
-    if (p.age >= 60)  printf("7-8 ");
-    printf("9+\n");
+  printf("Allowed seats: ");
+  if (p.disabled)   printf("1-2 ");
+  if (p.emergency)  printf("3-4 ");
+  if (p.pregnant)   printf("5-6 ");
+  if (p.age >= 60)  printf("7-8 ");
+  printf("9+\n");
 }
 
 int generateticketid()
 {
-    FILE *fp;
-    int id=1000;
-    fp = fopen("ticketid.txt", "r");
-    if (fp != NULL)
-    {
-     fscanf(fp, "%d", &id);
-     fclose(fp);
-    }
-    fp = fopen("ticketid.txt", "w");
-    if (fp == NULL)
-    {
-      return id;
-    }
-    fprintf(fp, "%d", id + 1);
+  FILE *fp;
+  int id=1000;
+  fp = fopen("ticketid.txt", "r");
+  if (fp != NULL)
+  {
+    fscanf(fp, "%d", &id);
     fclose(fp);
+  }
+  fp = fopen("ticketid.txt", "w");
+  if (fp == NULL)
+  {
     return id;
+  }
+  fprintf(fp, "%d", id + 1);
+  fclose(fp);
+  return id;
 }
 int seatchoice()
 {
@@ -373,59 +373,83 @@ int seatchoice()
 
 struct Passenger collectPassengerData()
 {
-    struct Passenger p;
-    printf("\nEnter Passenger Name: ");
-    getchar();
-    scanf("%[^\n]", p.name);
-    printf("Enter Passenger Age: ");
-    scanf("%d", &p.age);
-    printf("Enter Gender (1 = Female, 0 = Male): ");
-    scanf("%d", &p.gender);
-    if (p.gender == 1)
-    {
-      printf("Is the passenger pregnant? (1 = Yes, 0 = No): ");
-      scanf("%d", &p.pregnant);
-    }
-    else
-    {
-      p.pregnant = 0;
-    }
-    printf("Is the passenger disabled? (1 = Yes, 0 = No): ");
-    scanf("%d", &p.disabled);
-    printf("Emergency Case? (1 = Yes, 0 = No): ");
-    scanf("%d", &p.emergency);
-    return p;
+  struct Passenger p;
+  printf("\nEnter Passenger Name: ");
+  getchar();
+  scanf("%[^\n]", p.name);
+  printf("Enter Passenger Age: ");
+  scanf("%d", &p.age);
+  printf("Enter Gender (1 = Female, 0 = Male): ");
+  scanf("%d", &p.gender);
+  if (p.gender == 1)
+  {
+    printf("Is the passenger pregnant? (1 = Yes, 0 = No): ");
+    scanf("%d", &p.pregnant);
+  }
+  else
+  {
+    p.pregnant = 0;
+  }
+  printf("Is the passenger disabled? (1 = Yes, 0 = No): ");
+  scanf("%d", &p.disabled);
+  printf("Emergency Case? (1 = Yes, 0 = No): ");
+  scanf("%d", &p.emergency);
+  return p;
 }
 void generateTicketAndSummary()
 {
-    if (selectedBusIndex < 0 || selectedBusIndex >= buscount)
-    {
-      printf("\n❌ Ticket generation failed: Invalid bus index.\n");
-      return;
-    }
-    if (passengerCount <= 0)
-    {
-      printf("\n❌ No passengers booked.\n");
-      return;
-    }
-    int ticketId = generateticketid();
-    int totalFare = passengerCount * buses[selectedBusIndex].fare;
-    printf("\n====================================");
-    printf("\n        BOOKING CONFIRMATION");
-    printf("\n====================================");
-    printf("\nTicket ID      : %d", ticketId);
-    printf("\nBus Number     : %d", buses[selectedBusIndex].busno);
-    printf("\nRoute          : %s -> %s", buses[selectedBusIndex].source,
-           buses[selectedBusIndex].destination);
-    printf("\nDate           : %s", buses[selectedBusIndex].date);
-    printf("\nTotal Seats    : %d", passengerCount);
-    printf("\nTotal Fare     : %d", totalFare);
-    printf("\nBooked Seat no.: ");
-    for (int i = 0; i < passengerCount; i++)
-    {
-      printf("%d ", allocatedSeats[i]);
-    }
-    printf("\n====================================\n");
+  if (selectedBusIndex < 0 || selectedBusIndex >= buscount)
+  {
+    printf("\n❌ Ticket generation failed: Invalid bus index.\n");
+    return;
+  }
+  if (passengerCount <= 0)
+  {
+    printf("\n❌ No passengers booked.\n");
+    return;
+  }
+  int ticketId = generateticketid();
+  int totalFare = passengerCount * buses[selectedBusIndex].fare;
+  printf("\n====================================");
+  printf("\n        BOOKING CONFIRMATION");
+  printf("\n====================================");
+  printf("\nTicket ID      : %d", ticketId);
+  printf("\nBus Number     : %d", buses[selectedBusIndex].busno);
+  printf("\nRoute          : %s -> %s", buses[selectedBusIndex].source, buses[selectedBusIndex].destination);
+  printf("\nDate           : %s", buses[selectedBusIndex].date);
+  printf("\nTotal Seats    : %d", passengerCount);
+  printf("\nTotal Fare     : %d", totalFare);
+  printf("\nBooked Seat no.: ");
+  for (int i = 0; i < passengerCount; i++)
+  {
+    printf("%d ", allocatedSeats[i]);
+  }
+  printf("\n====================================\n");
+}
+int confirmTicket()
+{
+  char choice[10];
+  printf("\n====================================");
+  printf("\n        TICKET CONFIRMATION");
+  printf("\n====================================");
+  printf("\nConfirm Ticket?");
+  printf("\nEnter Yes / No (Y/N/1/0): ");
+  scanf("%s", choice);
+  toLowerCase(choice);
+  if (strcmp(choice, "y") == 0 || strcmp(choice, "yes") == 0 || strcmp(choice, "1") == 0)
+  {
+    printf("\n✅ Ticket Confirmed!\n");
+    return 1;   // Go to Module 9
+  }
+  else if (strcmp(choice, "n") == 0 || strcmp(choice, "no") == 0 || strcmp(choice, "0") == 0)
+  {
+    printf("\n❌ Ticket Cancelled");
+    return 0;   // Go to Module 10
+  }
+  else
+  {
+    printf("\nInvalid input. Ticket NOT confirmed.\n");
+  }
 }
 
 void main() 
@@ -464,4 +488,14 @@ void main()
     return;
   }
   generateTicketAndSummary();
+  int confirmation = confirmTicket();
+  if (confirmation == 1)
+  {
+    // MODULE 9 WILL BE CALLED HERE
+  }
+  else
+  {
+    // MODULE 10 WILL BE CALLED HERE
+  }
+
 }
