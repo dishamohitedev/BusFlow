@@ -35,6 +35,7 @@ int bookedSeatNumber = -1;
 struct Passenger passengers[MAX_PASSENGERS];
 int passengerCount = 0;
 int allocatedSeats[MAX_PASSENGERS];
+int lastGeneratedTicketId = -1;
 
 void initBuses() 
 {
@@ -449,12 +450,21 @@ int confirmTicket()
     printf("\nInvalid input. Ticket NOT confirmed.\n");
   }
 }
+void showTicketIdBeforeConfirmation()
+{
+  printf("\n====================================");
+  printf("\n        TICKET GENERATED");
+  printf("\n====================================");
+  printf("\nYour Ticket ID is : %d", lastGeneratedTicketId);
+  printf("\nPlease note this Ticket ID.");
+  printf("\n====================================\n");
+}
 void bookingCompletionDisplay()
 {
   printf("\n====================================");
   printf("\n         FINAL TICKET DETAILS");
   printf("\n====================================");
-  printf("\nTicket ID      : %d", generateticketid());
+  printf("\nTicket ID      : %d", lastGeneratedTicketId);
   printf("\nBus Number     : %d", buses[selectedBusIndex].busno);
   printf("\nRoute          : %s -> %s", buses[selectedBusIndex].source, buses[selectedBusIndex].destination);
   printf("\nDate           : %s", buses[selectedBusIndex].date);
@@ -475,6 +485,33 @@ void bookingCompletionDisplay()
   printf("\n🙏 Happy Journey!");
   printf("\nThank you for choosing our Bus Service.");
   printf("\n====================================\n");
+}
+void cancelTicket()
+{
+  int enteredTicketId;
+  printf("\n====================================");
+  printf("\n        TICKET CANCELLATION");
+  printf("\n====================================");
+  printf("\nEnter Ticket ID to cancel: ");
+  scanf("%d", &enteredTicketId);
+  if (enteredTicketId != lastGeneratedTicketId || lastGeneratedTicketId == -1)
+  {
+    printf("\n❌ Invalid Ticket ID.");
+    printf("\nCancellation Failed.\n");
+    return;
+  }
+  for (int i = 0; i < passengerCount; i++)
+  {
+    int seat = allocatedSeats[i];
+    buses[selectedBusIndex].seats[seat - 1] = 0;
+  }
+  printf("\n------------------------------------");
+  printf("\n❌ TICKET CANCELLED SUCCESSFULLY");
+  printf("\nWe are sorry to inform you that");
+  printf("\nyour ticket has been cancelled.");
+  printf("\n------------------------------------");
+  passengerCount = 0;
+  lastGeneratedTicketId = -1;
 }
 
 void main() 
@@ -512,7 +549,8 @@ void main()
   {
     return;
   }
-  generateTicketAndSummary();
+  lastGeneratedTicketId = generateticketid();
+  showTicketIdBeforeConfirmation();        
   int confirmation = confirmTicket();
   if (confirmation == 1)
   {
@@ -520,7 +558,7 @@ void main()
   }
   else
   {
-    // MODULE 10 WILL BE CALLED HERE
+    cancelTicket();               
   }
 
 }
