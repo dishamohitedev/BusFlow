@@ -6,6 +6,7 @@ void toLowerCase(char str[]);
 struct Passenger collectPassengerData();
 int seatchoice();
 void showSeatLegend();
+void addToWaitingList(struct Passenger p);
 
 struct Bus 
 {
@@ -36,6 +37,9 @@ struct Passenger passengers[MAX_PASSENGERS];
 int passengerCount = 0;
 int allocatedSeats[MAX_PASSENGERS];
 int lastGeneratedTicketId = -1;
+#define MAX_WAITING 20
+struct Passenger waitingList[MAX_WAITING];
+int waitingCount = 0;
 
 void initBuses() 
 {
@@ -304,9 +308,13 @@ int seatchoice()
       }
       if (!seatFound)
       {
-        printf("Seat allocation failed for Passenger %d\n", i + 1);
+        printf("\nSeats are FULL.\n");
+        for (int j = i; j < passengerCount; j++)
+        {
+          addToWaitingList(passengers[j]);
+        }
         return 0;
-      }
+     }
     }
     printf("\n--- Seat Allocation Summary (AUTO) ---\n");
     for (int i = 0; i < passengerCount; i++)
@@ -315,6 +323,24 @@ int seatchoice()
   }
   else if (choice == 2)
   {
+    int full = 1;
+    for (int s = 0; s < buses[index].totalseats; s++)
+    {
+      if (buses[index].seats[s] == 0)
+      {
+        full = 0;
+        break;
+      }
+    }
+    if (full)
+    {
+      printf("\nSeats are FULL.\n");
+      for (int i = 0; i < passengerCount; i++)
+      {
+        addToWaitingList(passengers[i]);
+      }
+      return 0;
+    }
     showseats(index);
     for (int i = 0; i < passengerCount; i++)
     {
@@ -503,6 +529,24 @@ void cancelTicket()
   lastGeneratedTicketId = -1;
 }
 
+void addToWaitingList(struct Passenger p)
+{
+  if (waitingCount >= MAX_WAITING)
+  {
+    printf("\nWaiting List is FULL.\n");
+    return;
+  }
+  waitingList[waitingCount] = p;
+  waitingCount++;
+  printf("\n====================================");
+  printf("\n      WAITING LIST CONFIRMATION");
+  printf("\n====================================");
+  printf("\nPassenger Name : %s", p.name);
+  printf("\nWaiting Number : WL %d", waitingCount);
+  printf("\nStatus         : Waiting");
+  printf("\n====================================\n");
+}
+
 void main() 
 { 
   initBuses();
@@ -536,6 +580,7 @@ void main()
   }
   if (!seatchoice())
   {
+    printf("\nBooking moved to Waiting List.\n");
     return;
   }
   generateTicketAndSummary();         
