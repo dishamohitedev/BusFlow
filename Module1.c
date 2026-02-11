@@ -7,6 +7,7 @@ struct Passenger collectPassengerData();
 int seatchoice();
 void showSeatLegend();
 void addToWaitingList(struct Passenger p);
+void reallocateSeat();
 
 struct Bus 
 {
@@ -525,6 +526,7 @@ void cancelTicket()
   printf("\nWe are sorry to inform you that");
   printf("\nyour ticket has been cancelled.");
   printf("\n------------------------------------");
+  reallocateSeat();
   passengerCount = 0;
   lastGeneratedTicketId = -1;
 }
@@ -545,6 +547,83 @@ void addToWaitingList(struct Passenger p)
   printf("\nWaiting Number : WL %d", waitingCount);
   printf("\nStatus         : Waiting");
   printf("\n====================================\n");
+}
+void reallocateSeat()
+{
+  if (waitingCount == 0)
+  {
+    return;
+  }
+  int index = selectedBusIndex;
+  for (int s = 0; s < buses[index].totalseats; s++)
+  {
+    if (buses[index].seats[s] == 0)  
+    {
+      int selected = -1;
+      for (int i = 0; i < waitingCount; i++)
+      {
+        if (waitingList[i].disabled)
+        {
+          selected = i;
+          break;
+        }
+      }
+      if (selected == -1)
+      {
+        for (int i = 0; i < waitingCount; i++)
+        {
+          if (waitingList[i].emergency)
+          {
+            selected = i;
+            break;
+          }
+        }
+      }
+      if (selected == -1)
+      {
+        for (int i = 0; i < waitingCount; i++)
+          {
+            if (waitingList[i].pregnant)
+            {
+              selected = i;
+              break;
+            }
+          }
+      }
+      if (selected == -1)
+      {
+        for (int i = 0; i < waitingCount; i++)
+        {
+          if (waitingList[i].age >= 60)
+          {
+            selected = i;
+            break;
+          }
+        }
+      }
+      if (selected == -1 && waitingCount > 0)
+      {
+        selected = 0;
+      }
+      if (selected != -1)
+      {
+        buses[index].seats[s] = 1;
+        printf("\n====================================");
+        printf("\n  WAITING LIST SEAT REALLOCATED");
+        printf("\n====================================");
+        printf("\nPassenger Name : %s", waitingList[selected].name);
+        printf("\nNew Seat No    : %d", s + 1);
+        printf("\nStatus         : CONFIRMED");
+        printf("\n====================================\n");
+        for (int j = selected; j < waitingCount - 1; j++)
+        {
+          waitingList[j] = waitingList[j + 1];
+        }
+        waitingCount--;
+        break;  
+      }
+    }
+  }
 }
 
 void main() 
