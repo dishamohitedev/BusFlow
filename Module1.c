@@ -401,23 +401,21 @@ void generateTicketAndSummary()
 {
   if (selectedBusIndex < 0 || selectedBusIndex >= buscount)
   {
-    printf("\n❌ Ticket generation failed: Invalid bus index.\n");
+    printf("\n Ticket generation failed: Invalid bus index.\n");
     return;
   }
   if (passengerCount <= 0)
   {
-    printf("\n❌ No passengers booked.\n");
+    printf("\n No passengers booked.\n");
     return;
   }
-  int ticketId = generateticketid();
+  lastGeneratedTicketId = generateticketid();
+  int ticketId = lastGeneratedTicketId;
   int totalFare = passengerCount * buses[selectedBusIndex].fare;
   printf("\n====================================");
-  printf("\n        BOOKING CONFIRMATION");
+  printf("\n        TEMPORARY TICKET");
   printf("\n====================================");
   printf("\nTicket ID      : %d", ticketId);
-  printf("\nBus Number     : %d", buses[selectedBusIndex].busno);
-  printf("\nRoute          : %s -> %s", buses[selectedBusIndex].source, buses[selectedBusIndex].destination);
-  printf("\nDate           : %s", buses[selectedBusIndex].date);
   printf("\nTotal Seats    : %d", passengerCount);
   printf("\nTotal Fare     : %d", totalFare);
   printf("\nBooked Seat no.: ");
@@ -439,25 +437,16 @@ int confirmTicket()
   toLowerCase(choice);
   if (strcmp(choice, "y") == 0 || strcmp(choice, "yes") == 0 || strcmp(choice, "1") == 0)
   {
-    return 1;   // Go to Module 9
+    return 1;  
   }
   else if (strcmp(choice, "n") == 0 || strcmp(choice, "no") == 0 || strcmp(choice, "0") == 0)
   {
-    return 0;   // Go to Module 10
+    return 0;   
   }
   else
   {
     printf("\nInvalid input. Ticket NOT confirmed.\n");
   }
-}
-void showTicketIdBeforeConfirmation()
-{
-  printf("\n====================================");
-  printf("\n        TICKET GENERATED");
-  printf("\n====================================");
-  printf("\nYour Ticket ID is : %d", lastGeneratedTicketId);
-  printf("\nPlease note this Ticket ID.");
-  printf("\n====================================\n");
 }
 void bookingCompletionDisplay()
 {
@@ -481,8 +470,8 @@ void bookingCompletionDisplay()
   printf("\nFare per Seat    : %d", buses[selectedBusIndex].fare);
   printf("\nTotal Fare       : %d", passengerCount * buses[selectedBusIndex].fare);
   printf("\n====================================");
-  printf("\n✅ BOOKING SUCCESSFUL!");
-  printf("\n🙏 Happy Journey!");
+  printf("\n BOOKING SUCCESSFUL!");
+  printf("\n Happy Journey!");
   printf("\nThank you for choosing our Bus Service.");
   printf("\n====================================\n");
 }
@@ -496,7 +485,7 @@ void cancelTicket()
   scanf("%d", &enteredTicketId);
   if (enteredTicketId != lastGeneratedTicketId || lastGeneratedTicketId == -1)
   {
-    printf("\n❌ Invalid Ticket ID.");
+    printf("\n Invalid Ticket ID.");
     printf("\nCancellation Failed.\n");
     return;
   }
@@ -506,7 +495,7 @@ void cancelTicket()
     buses[selectedBusIndex].seats[seat - 1] = 0;
   }
   printf("\n------------------------------------");
-  printf("\n❌ TICKET CANCELLED SUCCESSFULLY");
+  printf("\n TICKET CANCELLED SUCCESSFULLY");
   printf("\nWe are sorry to inform you that");
   printf("\nyour ticket has been cancelled.");
   printf("\n------------------------------------");
@@ -527,7 +516,7 @@ void main()
   scanf("%d", &busNo);
   if (selectedBusIndex == -1 || buses[selectedBusIndex].busno != busNo)
   {
-    printf("\n❌ Invalid Bus Number selected.\n");
+    printf("\n Invalid Bus Number selected.\n");
     return;
   }
   for (int i = 0; i < buscount; i++)
@@ -549,8 +538,7 @@ void main()
   {
     return;
   }
-  lastGeneratedTicketId = generateticketid();
-  showTicketIdBeforeConfirmation();        
+  generateTicketAndSummary();         
   int confirmation = confirmTicket();
   if (confirmation == 1)
   {
