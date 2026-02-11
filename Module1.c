@@ -8,6 +8,9 @@ int seatchoice();
 void showSeatLegend();
 void addToWaitingList(struct Passenger p);
 void reallocateSeat();
+void saveTicketToFile();
+void saveSeatsToFile();
+void loadSeatsFromFile();
 
 struct Bus 
 {
@@ -452,6 +455,47 @@ void generateTicketAndSummary()
   }
   printf("\n====================================\n");
 }
+
+void saveTicketToFile()
+{
+  FILE *fp = fopen("tickets.txt", "a");
+  if (fp == NULL)
+  {
+    printf("Error opening ticket file.\n");
+    return;
+  }
+  fprintf(fp, "Ticket ID: %d\n", lastGeneratedTicketId);
+  fprintf(fp, "Bus No: %d\n", buses[selectedBusIndex].busno);
+  fprintf(fp, "Passengers: %d\n", passengerCount);
+  fprintf(fp, "Total Fare: %d\n", passengerCount * buses[selectedBusIndex].fare);
+  for (int i = 0; i < passengerCount; i++)
+  {
+    fprintf(fp, "Name: %s | Age: %d | Seat: %d\n", passengers[i].name,passengers[i].age,allocatedSeats[i]);
+  }
+  fprintf(fp, "-----------------------------------\n");
+  fclose(fp);
+}
+void saveSeatsToFile()
+{
+  FILE *fp = fopen("seats.dat", "wb");
+  if (fp == NULL)
+  {
+    return;
+  }      
+  fwrite(buses, sizeof(struct Bus), buscount, fp);
+  fclose(fp);
+}
+void loadSeatsFromFile()
+{
+  FILE *fp = fopen("seats.dat", "rb");
+  if (fp == NULL)
+  {
+    return;
+  }    
+  fread(buses, sizeof(struct Bus), buscount, fp);
+  fclose(fp);
+}
+
 int confirmTicket()
 {
   char choice[10];
@@ -527,6 +571,7 @@ void cancelTicket()
   printf("\nyour ticket has been cancelled.");
   printf("\n------------------------------------");
   reallocateSeat();
+  saveSeatsToFile();
   passengerCount = 0;
   lastGeneratedTicketId = -1;
 }
@@ -629,6 +674,7 @@ void reallocateSeat()
 void main() 
 { 
   initBuses();
+  loadSeatsFromFile();
   displayBuses();
   if (!searchbus())
   {
@@ -667,6 +713,8 @@ void main()
   if (confirmation == 1)
   {
     bookingCompletionDisplay(); 
+    saveTicketToFile();  
+    saveSeatsToFile();
   }
   else
   {
