@@ -1,7 +1,27 @@
-Ticket ID: 1002
+Ticket ID: 1000
 Bus No: 101
 Passengers: 2
 Total Fare: 2000
-Name: Disha | Age: 19 | Seat: 3
+Name: Disha  | Age: 19 | Seat: 3
 Name: Vaishali  | Age: 49 | Seat: 9
+-----------------------------------
+Ticket ID: 1001
+Bus No: 101
+Passengers: 2
+Total Fare: 2000
+Name: mohini | Age: 23 | Seat: 4
+Name: mohan  | Age: 23 | Seat: 10
+-----------------------------------
+Ticket ID: 1002
+Bus No: 101
+Passengers: 1
+Total Fare: 1000
+Name: mohan | Age: 23 | Seat: 2
+-----------------------------------
+Ticket ID: 1003
+Bus No: 104
+Passengers: 2
+Total Fare: 8000
+Name: mohan | Age: 23 | Seat: 9
+Name: ramesh | Age: 32 | Seat: 10
 -----------------------------------
