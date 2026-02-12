@@ -98,15 +98,17 @@ On cancellation:
 - Priority-based logic design
 ---
 ---
-
 ## 📂 Project Structure
+
+```
 BusFlow/
 │
-├── Module1.c # Main program file
-├── seats.dat # Seat booking binary file
-├── tickets.txt # Ticket records
-├── ticketid.txt # Stores last ticket ID
-└── README.md # Project documentation
+├── Module1.c        # Main program file
+├── seats.dat        # Seat booking binary file
+├── tickets.txt      # Ticket records
+├── ticketid.txt     # Stores last ticket ID
+└── README.md        # Project documentation
+```
 
 ---
 ---
