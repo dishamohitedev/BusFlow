@@ -25,3 +25,10 @@ Total Fare: 8000
 Name: mohan | Age: 23 | Seat: 9
 Name: ramesh | Age: 32 | Seat: 10
 -----------------------------------
+Ticket ID: 1004
+Bus No: 101
+Passengers: 2
+Total Fare: 2000
+Name: Disha  | Age: 19 | Seat: 11
+Name: Vaishali  | Age: 45 | Seat: 12
+-----------------------------------
