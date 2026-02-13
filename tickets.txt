@@ -32,3 +32,10 @@ Total Fare: 2000
 Name: Disha  | Age: 19 | Seat: 11
 Name: Vaishali  | Age: 45 | Seat: 12
 -----------------------------------
+Ticket ID: 1006
+Bus No: 101
+Passengers: 2
+Total Fare: 2000
+Name: aayush | Age: 56 | Seat: 50
+Name: ww | Age: 23 | Seat: 32
+-----------------------------------
