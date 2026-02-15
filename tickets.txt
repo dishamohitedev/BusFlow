@@ -204,3 +204,10 @@ Total Fare: 2400
 Name: DISHA | Age: 34 | Seat: 5
 Name: VAISHALI | Age: 38 | Seat: 3
 -----------------------------------
+Ticket ID: 1023
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: Mohini | Age: 84 | Seat: 4
+Name: Mohan | Age: 34 | Seat: 9
+-----------------------------------
