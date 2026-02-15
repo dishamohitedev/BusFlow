@@ -18,6 +18,8 @@ struct Bus
   char source[100];
   char destination[100];
   char date[12];
+  char departure[10];
+  char arrival[10];
   int totalseats;
   int fare;
   int seats[80];   
@@ -32,7 +34,7 @@ struct Passenger
   int emergency;     
 };
 
-struct Bus buses[5];
+struct Bus buses[15];
 int buscount = 0;
 int selectedBusIndex = -1;
 int bookedSeatNumber = -1;
@@ -47,42 +49,110 @@ int waitingCount = 0;
 
 void initBuses() 
 {
-  buscount = 5;
+  buscount = 11;
 
-  buses[0].busno =101;
+  buses[0].busno =64;
   strcpy(buses[0].source, "Mumbai");
   strcpy(buses[0].destination, "Pune");
   strcpy(buses[0].date, "01-02-2026");
+  strcpy(buses[0].departure, "06:00");
+  strcpy(buses[0].arrival, "09:30");
   buses[0].totalseats = 50;
   buses[0].fare = 1000;
 
-  buses[1].busno =102;
+  buses[1].busno = 85;
   strcpy(buses[1].source, "Mumbai");
-  strcpy(buses[1].destination, "Delhi");
-  strcpy(buses[1].date, "02-02-2026");
+  strcpy(buses[1].destination, "Pune");
+  strcpy(buses[1].date, "01-02-2026");
+  strcpy(buses[1].departure, "12:00");
+  strcpy(buses[1].arrival, "15:30");
   buses[1].totalseats = 50;
-  buses[1].fare = 2000;
+  buses[1].fare = 1200;
 
-  buses[2].busno=103;
+  buses[2].busno = 912;
   strcpy(buses[2].source, "Mumbai");
-  strcpy(buses[2].destination, "Banglore");
-  strcpy(buses[2].date, "03-02-2026");
+  strcpy(buses[2].destination, "Pune");
+  strcpy(buses[2].date, "01-02-2026");
+  strcpy(buses[2].departure, "18:00");
+  strcpy(buses[2].arrival, "21:30");
   buses[2].totalseats = 50;
-  buses[2].fare = 5000;
+  buses[2].fare = 1100;
 
-  buses[3].busno=104;
+
+  buses[3].busno =401;
   strcpy(buses[3].source, "Mumbai");
-  strcpy(buses[3].destination, "Ahemdabad");
-  strcpy(buses[3].date, "04-02-2026");
+  strcpy(buses[3].destination, "Delhi");
+  strcpy(buses[3].date, "02-02-2026");
+  strcpy(buses[3].departure, "07:00");
+  strcpy(buses[3].arrival, "21:00");
   buses[3].totalseats = 50;
-  buses[3].fare = 4000;
+  buses[3].fare = 2000;
 
-  buses[4].busno =105;
+  buses[4].busno = 728;
   strcpy(buses[4].source, "Mumbai");
-  strcpy(buses[4].destination, "Nashik");
-  strcpy(buses[4].date, "05-02-2026");
+  strcpy(buses[4].destination, "Delhi");
+  strcpy(buses[4].date, "02-02-2026");
+  strcpy(buses[4].departure, "16:00");
+  strcpy(buses[4].arrival, "06:00");
   buses[4].totalseats = 50;
-  buses[4].fare = 800;
+  buses[4].fare = 2300;
+
+
+  buses[5].busno = 222;
+  strcpy(buses[5].source, "Mumbai");
+  strcpy(buses[5].destination, "Banglore");
+  strcpy(buses[5].date, "03-02-2026");
+  strcpy(buses[5].departure, "06:00");
+  strcpy(buses[5].arrival, "20:00");
+  buses[5].totalseats = 50;
+  buses[5].fare = 3500;
+
+  buses[6].busno = 989;
+  strcpy(buses[6].source, "Mumbai");
+  strcpy(buses[6].destination, "Banglore");
+  strcpy(buses[6].date, "03-02-2026");
+  strcpy(buses[6].departure, "17:00");
+  strcpy(buses[6].arrival, "07:00");
+  buses[6].totalseats = 50;
+  buses[6].fare = 3300;
+
+
+  buses[7].busno = 563;
+  strcpy(buses[7].source, "Mumbai");
+  strcpy(buses[7].destination, "Ahemdabad");
+  strcpy(buses[7].date, "04-02-2026");
+  strcpy(buses[7].departure, "05:30");
+  strcpy(buses[7].arrival, "13:30");
+  buses[7].totalseats = 50;
+  buses[7].fare = 1800;
+
+  buses[8].busno = 294;
+  strcpy(buses[8].source, "Mumbai");
+  strcpy(buses[8].destination, "Ahemdabad");
+  strcpy(buses[8].date, "04-02-2026");
+  strcpy(buses[8].departure, "14:00");
+  strcpy(buses[8].arrival, "22:00");
+  buses[8].totalseats = 50;
+  buses[8].fare = 1700;
+
+
+  buses[9].busno = 811;
+  strcpy(buses[9].source, "Mumbai");
+  strcpy(buses[9].destination, "Nashik");
+  strcpy(buses[9].date, "05-02-2026");
+  strcpy(buses[9].departure, "08:00");
+  strcpy(buses[9].arrival, "11:30");
+  buses[9].totalseats = 50;
+  buses[9].fare = 900;
+
+  buses[10].busno = 376;
+  strcpy(buses[10].source, "Mumbai");
+  strcpy(buses[10].destination, "Nashik");
+  strcpy(buses[10].date, "05-02-2026");
+  strcpy(buses[10].departure, "18:00");
+  strcpy(buses[10].arrival, "21:30");
+  buses[10].totalseats = 50;
+  buses[10].fare = 850;
 
   for (int i = 0; i<buscount; i++)
   { 
@@ -94,12 +164,25 @@ void initBuses()
 }
 void displayBuses() 
 {
-  printf("\n Available Buses:");
-  for (int i = 0; i<buscount; i++) 
+  printf("\nAvailable Routes:\n");
+  for (int i = 0; i < buscount; i++)
   {
-    printf("\n BusNo: %d | %s -> %s | Date:%s | Seats: %d | Fare: %d", buses[i].busno, buses[i].source, buses[i].destination,buses[i].date, buses[i].totalseats, buses[i].fare);
+    int alreadyPrinted = 0;
+    for (int j = 0; j < i; j++)
+    {
+      if (strcmp(buses[i].source, buses[j].source) == 0 && strcmp(buses[i].destination, buses[j].destination) == 0)
+      {
+        alreadyPrinted = 1;
+        break;
+      }
+    }
+    if (!alreadyPrinted)
+    {
+      printf("%s -> %s\n", buses[i].source, buses[i].destination);
+    }
   }
 }
+
 void toLowerCase(char str[])
 {
   int i = 0;
@@ -112,9 +195,35 @@ void toLowerCase(char str[])
     i++;
   }
 }
+void convertTo12Hour(char time24[], char time12[])
+{
+  int hour, minute;
+  char period[3];
+  sscanf(time24, "%d:%d", &hour, &minute);
+  if (hour == 0)
+  {
+    hour = 12;
+    strcpy(period, "AM");
+  }
+  else if (hour < 12)
+  {
+    strcpy(period, "AM");
+  }
+  else if (hour == 12)
+  {
+        strcpy(period, "PM");
+  }
+    else
+    {
+        hour -= 12;
+        strcpy(period, "PM");
+    }
+
+    sprintf(time12, "%02d:%02d %s", hour, minute, period);
+}
 int searchbus()
 {
-  char sour[100],dest[100],date[12];
+  char sour[100],dest[100];
   char bussour[100],busdest[100];
   int found = 0;
   selectedBusIndex = -1; 
@@ -123,8 +232,6 @@ int searchbus()
   scanf("%s",sour);
   printf("\n Enter Destination:");
   scanf("%s",dest);
-  printf("\n Enter Date (dd-mm-yyyy):");
-  scanf("%s",date);
 
   toLowerCase(sour);
   toLowerCase(dest);
@@ -138,11 +245,13 @@ int searchbus()
     toLowerCase(bussour);
     toLowerCase(busdest);
 
-    if (strcmp(bussour, sour) == 0 && strcmp(busdest, dest) == 0 && strcmp(buses[i].date, date) == 0)
+    if (strcmp(bussour, sour) == 0 && strcmp(busdest, dest) == 0) 
     {
-      printf("BusNo: %d | %s -> %s | Date:%s | Seats:%d | Fare:%d\n",buses[i].busno,buses[i].source, buses[i].destination, buses[i].date, buses[i].totalseats,buses[i].fare);
+      char dep12[15], arr12[15];
+      convertTo12Hour(buses[i].departure,dep12);
+      convertTo12Hour(buses[i].arrival, arr12);
+      printf("BusNo: %d | %s -> %s | Date: %s | Dep: %s | Arr: %s | Fare:%d\n",buses[i].busno, buses[i].source, buses[i].destination, buses[i].date, dep12, arr12, buses[i].fare);
       found = 1;
-      selectedBusIndex = i;
     }
   }
 
@@ -683,11 +792,6 @@ void main()
   int busNo;
   printf("\nEnter Bus Number: ");
   scanf("%d", &busNo);
-  if (selectedBusIndex == -1 || buses[selectedBusIndex].busno != busNo)
-  {
-    printf("\n Invalid Bus Number selected.\n");
-    return;
-  }
   for (int i = 0; i < buscount; i++)
   {
     if (buses[i].busno == busNo)
@@ -695,6 +799,11 @@ void main()
       selectedBusIndex = i;
       break;
     }
+  }
+  if (selectedBusIndex == -1)
+  {
+    printf("\nInvalid Bus Number selected.\n");
+    return;
   }
   printf("\nEnter number of seats required: ");
   scanf("%d", &passengerCount);

@@ -72,3 +72,10 @@ Passengers: 1
 Total Fare: 1000
 Name: mohini | Age: 23 | Seat: 22
 -----------------------------------
+Ticket ID: 1015
+Bus No: 64
+Passengers: 2
+Total Fare: 2000
+Name: mohinin  | Age: 23 | Seat: 10
+Name: mohan | Age: 32 | Seat: 11
+-----------------------------------
