@@ -39,3 +39,36 @@ Total Fare: 2000
 Name: aayush | Age: 56 | Seat: 50
 Name: ww | Age: 23 | Seat: 32
 -----------------------------------
+Ticket ID: 1008
+Bus No: 101
+Passengers: 2
+Total Fare: 2000
+Name: mohini | Age: 63 | Seat: 7
+Name: mohan | Age: 23 | Seat: 13
+-----------------------------------
+Ticket ID: 1011
+Bus No: 101
+Passengers: 5
+Total Fare: 5000
+Name:  ovi | Age: 12 | Seat: 14
+Name: vishakha | Age: 45 | Seat: 15
+Name: ganesh | Age: 45 | Seat: 16
+Name: ganesh | Age: 45 | Seat: 17
+Name: vaishali | Age: 48 | Seat: 18
+-----------------------------------
+Ticket ID: 1012
+Bus No: 101
+Passengers: 5
+Total Fare: 5000
+Name: lata | Age: 34 | Seat: 19
+Name: hemkata | Age: 23 | Seat: 1
+Name: mohan | Age: 35 | Seat: 20
+Name: rohan | Age: 45 | Seat: 21
+Name: soham | Age: 78 | Seat: 8
+-----------------------------------
+Ticket ID: 1014
+Bus No: 101
+Passengers: 1
+Total Fare: 1000
+Name: mohini | Age: 23 | Seat: 22
+-----------------------------------

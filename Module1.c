@@ -100,7 +100,6 @@ void displayBuses()
     printf("\n BusNo: %d | %s -> %s | Date:%s | Seats: %d | Fare: %d", buses[i].busno, buses[i].source, buses[i].destination,buses[i].date, buses[i].totalseats, buses[i].fare);
   }
 }
-
 void toLowerCase(char str[])
 {
   int i = 0;
@@ -594,6 +593,7 @@ void addToWaitingList(struct Passenger p)
   printf("\n====================================\n");
 }
 void reallocateSeat()
+
 {
   if (waitingCount == 0)
   {
@@ -709,16 +709,29 @@ void main()
     return;
   }
   generateTicketAndSummary();         
-  int confirmation = confirmTicket();
-  if (confirmation == 1)
+  while (1)
   {
-    bookingCompletionDisplay(); 
-    saveTicketToFile();  
-    saveSeatsToFile();
+    int confirmation = confirmTicket();
+    if (confirmation == 1)
+    {
+        bookingCompletionDisplay();
+        saveTicketToFile();
+        saveSeatsToFile();
+        break;   
+    }
+    else
+    {
+      int previousTicketId = lastGeneratedTicketId;
+      cancelTicket();
+      if (lastGeneratedTicketId == previousTicketId)
+      {
+    
+        continue;  
+      }
+      else
+      {
+        break;   
+      }
+    }
   }
-  else
-  {
-    cancelTicket();               
-  }
-
 }
