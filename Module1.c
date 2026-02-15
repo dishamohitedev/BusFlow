@@ -34,7 +34,8 @@ struct Passenger
   int gender;        
   int pregnant;      
   int disabled;     
-  int emergency;     
+  int emergency;  
+  int busno;   
 };
 
 struct Bus buses[15];
@@ -702,6 +703,7 @@ void addToWaitingList(struct Passenger p)
     printf("\nWaiting List is FULL.\n");
     return;
   }
+  p.busno = buses[selectedBusIndex].busno;
   int priority = getPriority(p);
   int pos = waitingCount;
   for (int i = 0; i < waitingCount; i++)
@@ -750,6 +752,7 @@ void reallocateSeat()
     return;
   }
   int index = selectedBusIndex;
+  int currentBusNo = buses[index].busno;
   for (int s = 0; s < buses[index].totalseats; s++)
   {
     if (buses[index].seats[s] == 0)  
@@ -757,7 +760,7 @@ void reallocateSeat()
       int selected = -1;
       for (int i = 0; i < waitingCount; i++)
       {
-        if (waitingList[i].disabled)
+        if (waitingList[i].busno == currentBusNo && waitingList[i].disabled)
         {
           selected = i;
           break;
@@ -767,7 +770,7 @@ void reallocateSeat()
       {
         for (int i = 0; i < waitingCount; i++)
         {
-          if (waitingList[i].emergency)
+         if (waitingList[i].busno == currentBusNo && waitingList[i].emergency)
           {
             selected = i;
             break;
@@ -778,7 +781,7 @@ void reallocateSeat()
       {
         for (int i = 0; i < waitingCount; i++)
           {
-            if (waitingList[i].pregnant)
+           if (waitingList[i].busno == currentBusNo && waitingList[i].pregnant)
             {
               selected = i;
               break;
@@ -789,16 +792,23 @@ void reallocateSeat()
       {
         for (int i = 0; i < waitingCount; i++)
         {
-          if (waitingList[i].age >= 60)
+          if (waitingList[i].busno == currentBusNo && waitingList[i].age >= 60)
           {
             selected = i;
             break;
           }
         }
       }
-      if (selected == -1 && waitingCount > 0)
+      if (selected == -1) 
       {
-        selected = 0;
+        for (int i = 0; i < waitingCount; i++)
+        {
+          if (waitingList[i].busno == currentBusNo)
+          {
+            selected = i;
+            break;
+          }
+        }
       }
       if (selected != -1)
       {

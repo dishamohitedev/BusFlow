@@ -197,3 +197,10 @@ Name: Ovi | Age: 12 | Seat: 48
 Name: Vishakha | Age: 45 | Seat: 49
 Name: Vaishali  | Age: 49 | Seat: 50
 -----------------------------------
+Ticket ID: 1020
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: DISHA | Age: 34 | Seat: 5
+Name: VAISHALI | Age: 38 | Seat: 3
+-----------------------------------
