@@ -38,7 +38,7 @@ struct Bus buses[15];
 int buscount = 0;
 int selectedBusIndex = -1;
 int bookedSeatNumber = -1;
-#define MAX_PASSENGERS 10
+#define MAX_PASSENGERS 50
 struct Passenger passengers[MAX_PASSENGERS];
 int passengerCount = 0;
 int allocatedSeats[MAX_PASSENGERS];
@@ -804,7 +804,7 @@ void main()
   {
     printf("\nInvalid Bus Number selected.\n");
     return;
-  }
+}
   printf("\nEnter number of seats required: ");
   scanf("%d", &passengerCount);
   for (int i = 0; i < passengerCount; i++)

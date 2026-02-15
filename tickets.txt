@@ -79,3 +79,121 @@ Total Fare: 2000
 Name: mohinin  | Age: 23 | Seat: 10
 Name: mohan | Age: 32 | Seat: 11
 -----------------------------------
+Ticket ID: 1016
+Bus No: 64
+Passengers: 10
+Total Fare: 10000
+Name: Rajesh  | Age: 35 | Seat: 1
+Name: Kvita  | Age: 30 | Seat: 2
+Name: Amit  | Age: 28 | Seat: 3
+Name: Sneha  | Age: 26 | Seat: 4
+Name: Pooja | Age: 29 | Seat: 5
+Name: Anjali  | Age: 32 | Seat: 6
+Name: Mahendra | Age: 65 | Seat: 7
+Name: Usha | Age: 70 | Seat: 8
+Name: Imran | Age: 27 | Seat: 9
+Name: Riya  | Age: 24 | Seat: 12
+-----------------------------------
+Ticket ID: 1017
+Bus No: 64
+Passengers: 20
+Total Fare: 20000
+Name: Aarav | Age: 23 | Seat: 13
+Name: Riya | Age: 24 | Seat: 14
+Name: Kunal | Age: 26 | Seat: 15
+Name: Muskan | Age: 22 | Seat: 16
+Name: Dev | Age: 25 | Seat: 17
+Name: senha | Age: 23 | Seat: 18
+Name: Parth | Age: 27 | Seat: 19
+Name: Aditi | Age: 21 | Seat: 20
+Name: Rahul | Age: 28 | Seat: 21
+Name: Diya | Age: 22 | Seat: 22
+Name: Nishant | Age: 29 | Seat: 23
+Name: Ishita | Age: 24 | Seat: 24
+Name: Arjun | Age: 26 | Seat: 25
+Name: Palak | Age: 23 | Seat: 26
+Name: Harsh | Age: 25 | Seat: 27
+Name: Trisha | Age: 22 | Seat: 28
+Name: Kartik | Age: 27 | Seat: 29
+Name: Merra | Age: 24 | Seat: 30
+Name: Yah | Age: 23 | Seat: 31
+Name: Rutjuja | Age: 25 | Seat: 32
+-----------------------------------
+Ticket ID: 1018
+Bus No: 64
+Passengers: 18
+Total Fare: 18000
+Name: Omkar | Age: 2 | Seat: 33
+Name: Kritika | Age: 22 | Seat: 34
+Name: Siddharth | Age: 26 | Seat: 35
+Name: Tanvi 23 | Age: 23 | Seat: 36
+Name: Mohit | Age: 27 | Seat: 37
+Name: Arya  | Age: 21 | Seat: 38
+Name: Varun | Age: 29 | Seat: 39
+Name: Nidhi | Age: 24 | Seat: 40
+Name: Lakshya  | Age: 23 | Seat: 41
+Name: Pooja | Age: 25 | Seat: 42
+Name: Abhishek 26 | Age: 26 | Seat: 43
+Name: Simran | Age: 22 | Seat: 44
+Name: Harshit  | Age: 27 | Seat: 45
+Name: Aishwarya | Age: 24 | Seat: 46
+Name: Tanishk  | Age: 23 | Seat: 47
+Name: Riya  | Age: 22 | Seat: 48
+Name: Aryan 25 | Age: 25 | Seat: 49
+Name: Shruti  | Age: 23 | Seat: 50
+-----------------------------------
+Ticket ID: 1019
+Bus No: 728
+Passengers: 50
+Total Fare: 115000
+Name: Rajesh | Age: 35 | Seat: 1
+Name: Kavita  | Age: 30 | Seat: 2
+Name: Amit | Age: 28 | Seat: 3
+Name: Sneha  | Age: 26 | Seat: 4
+Name: POoja | Age: 29 | Seat: 5
+Name: Anjali | Age: 32 | Seat: 6
+Name: Mahendra | Age: 65 | Seat: 7
+Name: Usha | Age: 70 | Seat: 8
+Name: AArav | Age: 23 | Seat: 9
+Name: Riya  | Age: 24 | Seat: 10
+Name: Kunal | Age: 26 | Seat: 11
+Name: Muskan | Age: 22 | Seat: 12
+Name:  dev | Age: 25 | Seat: 13
+Name: Sneha | Age: 23 | Seat: 14
+Name: Parth  | Age: 27 | Seat: 15
+Name: Aditi | Age: 21 | Seat: 16
+Name: Rahul | Age: 28 | Seat: 17
+Name: Diya  | Age: 22 | Seat: 18
+Name: Nishant  | Age: 29 | Seat: 19
+Name: Ishita  | Age: 24 | Seat: 20
+Name: Arjun  | Age: 26 | Seat: 21
+Name: Palak | Age: 23 | Seat: 22
+Name: Harsh | Age: 25 | Seat: 23
+Name: Trisha  | Age: 22 | Seat: 24
+Name: Kartik  | Age: 27 | Seat: 25
+Name: Meera  | Age: 24 | Seat: 26
+Name:  Yash | Age: 23 | Seat: 27
+Name: Rutuja  | Age: 25 | Seat: 28
+Name: Onkar | Age: 28 | Seat: 29
+Name: Kritika  | Age: 22 | Seat: 30
+Name: Siddharth | Age: 26 | Seat: 31
+Name: Tanvi 23 | Age: 23 | Seat: 32
+Name: Mohit  | Age: 27 | Seat: 33
+Name: Aarya  | Age: 21 | Seat: 34
+Name: Varun  | Age: 29 | Seat: 35
+Name: Nidhi | Age: 23 | Seat: 36
+Name: Lakshya  | Age: 23 | Seat: 37
+Name: Pooja | Age: 25 | Seat: 38
+Name: Abhishek | Age: 23 | Seat: 39
+Name: Simran  | Age: 22 | Seat: 40
+Name: Harshit | Age: 27 | Seat: 41
+Name: Aishwarya | Age: 24 | Seat: 42
+Name: Tanishk | Age: 23 | Seat: 43
+Name: Riya  | Age: 22 | Seat: 44
+Name: Aryan  | Age: 25 | Seat: 45
+Name: Shruti  | Age: 23 | Seat: 46
+Name: Disha  | Age: 19 | Seat: 47
+Name: Ovi | Age: 12 | Seat: 48
+Name: Vishakha | Age: 45 | Seat: 49
+Name: Vaishali  | Age: 49 | Seat: 50
+-----------------------------------
