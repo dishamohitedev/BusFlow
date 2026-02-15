@@ -11,6 +11,9 @@ void reallocateSeat();
 void saveTicketToFile();
 void saveSeatsToFile();
 void loadSeatsFromFile();
+void saveWaitingListToFile();
+void loadWaitingListFromFile();
+int getPriority(struct Passenger p);
 
 struct Bus 
 {
@@ -684,6 +687,14 @@ void cancelTicket()
   lastGeneratedTicketId = -1;
 }
 
+int getPriority(struct Passenger p)
+{
+  if (p.disabled) return 1;
+  if (p.emergency) return 2;
+  if (p.pregnant) return 3;
+  if (p.age >= 60) return 4;
+  return 5;
+}
 void addToWaitingList(struct Passenger p)
 {
   if (waitingCount >= MAX_WAITING)
@@ -691,18 +702,48 @@ void addToWaitingList(struct Passenger p)
     printf("\nWaiting List is FULL.\n");
     return;
   }
-  waitingList[waitingCount] = p;
+  int priority = getPriority(p);
+  int pos = waitingCount;
+  for (int i = 0; i < waitingCount; i++)
+  {
+    if (priority < getPriority(waitingList[i]))
+    {
+      pos = i;
+      break;
+    }
+  }
+  for (int i = waitingCount; i > pos; i--)
+  {
+   waitingList[i] = waitingList[i - 1];
+  }
+  waitingList[pos] = p;
   waitingCount++;
   printf("\n====================================");
   printf("\n      WAITING LIST CONFIRMATION");
   printf("\n====================================");
   printf("\nPassenger Name : %s", p.name);
-  printf("\nWaiting Number : WL %d", waitingCount);
+  printf("\nWaiting Number : WL %d", pos + 1);
   printf("\nStatus         : Waiting");
   printf("\n====================================\n");
+  saveWaitingListToFile();
+}
+void saveWaitingListToFile()
+{
+  FILE *fp = fopen("waitinglist.dat", "wb");
+  if (fp == NULL) return;
+  fwrite(&waitingCount, sizeof(int), 1, fp);
+  fwrite(waitingList, sizeof(struct Passenger), waitingCount, fp);
+  fclose(fp);
+}
+void loadWaitingListFromFile()
+{
+  FILE *fp = fopen("waitinglist.dat", "rb");
+  if (fp == NULL) return;
+  fread(&waitingCount, sizeof(int), 1, fp);
+  fread(waitingList, sizeof(struct Passenger), waitingCount, fp);
+  fclose(fp);
 }
 void reallocateSeat()
-
 {
   if (waitingCount == 0)
   {
@@ -774,16 +815,34 @@ void reallocateSeat()
           waitingList[j] = waitingList[j + 1];
         }
         waitingCount--;
+        saveWaitingListToFile();
         break;  
       }
     }
   }
+}
+void displayWaitingList()
+{
+  if (waitingCount == 0)
+  {
+    printf("\nWaiting List is empty.\n");
+    return;
+  }
+  printf("\n====================================");
+  printf("\n         FULL WAITING LIST");
+  printf("\n====================================\n");
+  for (int i = 0; i < waitingCount; i++)
+  {
+    printf("WL %d -> %s | Age: %d\n", i + 1, waitingList[i].name, waitingList[i].age);
+  }
+  printf("====================================\n");
 }
 
 void main() 
 { 
   initBuses();
   loadSeatsFromFile();
+  loadWaitingListFromFile();
   displayBuses();
   if (!searchbus())
   {
@@ -815,6 +874,14 @@ void main()
   if (!seatchoice())
   {
     printf("\nBooking moved to Waiting List.\n");
+    char choice[10];
+    printf("\nDo you want to see the entire waiting list? (Y/N): ");
+    scanf("%s", choice);
+    toLowerCase(choice);
+    if (strcmp(choice, "y") == 0 || strcmp(choice, "yes") == 0)
+    {
+      displayWaitingList();
+    }
     return;
   }
   generateTicketAndSummary();         
