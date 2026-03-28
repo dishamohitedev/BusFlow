@@ -875,6 +875,52 @@ void displayWaitingList()
   }
   printf("====================================\n");
 }
+void showSeatCount(int index)
+{
+    int booked = 0, vacant = 0;
+    for (int i = 0; i < buses[index].totalseats; i++)
+    {
+        if (buses[index].seats[i] == 1)
+            booked++;
+        else
+            vacant++;
+    }
+    printf("\n====================================");
+    printf("\n        SEAT AVAILABILITY");
+    printf("\n====================================");
+    printf("\nTotal Seats  : %d", buses[index].totalseats);
+    printf("\nBooked Seats : %d", booked);
+    printf("\nVacant Seats : %d", vacant);
+    printf("\n====================================\n");
+}
+void showSeatCategoryAvailability(int index)
+{
+    int disabled = 0, emergency = 0, pregnant = 0, senior = 0, normal = 0;
+
+    for (int i = 0; i < buses[index].totalseats; i++)
+    {
+        if (buses[index].seats[i] == 0) // only vacant seats
+        {
+            if (i >= 0 && i <= 1) disabled++;       // seats 1-2
+            else if (i >= 2 && i <= 3) emergency++; // seats 3-4
+            else if (i >= 4 && i <= 5) pregnant++;  // seats 5-6
+            else if (i >= 6 && i <= 7) senior++;    // seats 7-8
+            else normal++;                          // 9+
+        }
+    }
+
+    printf("\n====================================");
+    printf("\n CATEGORY-WISE AVAILABILITY");
+    printf("\n====================================");
+
+    printf("\nDisabled Seats (1-2): %d", disabled);
+    printf("\nEmergency Seats (3-4): %d", emergency);
+    printf("\nPregnant Seats (5-6): %d", pregnant);
+    printf("\nSenior Seats (7-8): %d", senior);
+    printf("\nNormal Seats (9+): %d", normal);
+
+    printf("\n====================================\n");
+}
 
 void main() 
 { 
@@ -901,7 +947,9 @@ void main()
   {
     printf("\nInvalid Bus Number selected.\n");
     return;
-}
+  }
+  showSeatCount(selectedBusIndex);
+  showSeatCategoryAvailability(selectedBusIndex);
   printf("\nEnter number of seats required: ");
   scanf("%d", &passengerCount);
   for (int i = 0; i < passengerCount; i++)

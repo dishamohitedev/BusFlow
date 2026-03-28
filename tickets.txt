@@ -254,3 +254,30 @@ Total Fare: 2400
 Name: mohini | Age: 23 | Seat: 6
 Name: reva | Age: 23 | Seat: 12
 -----------------------------------
+Ticket ID: 1032
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: MOHINI  | Age: 23 | Seat: 13
+Name: mohan  | Age: 67 | Seat: 8
+-----------------------------------
+Ticket ID: 1035
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: priyanka | Age: 23 | Seat: 14
+Name: samruddhi | Age: 23 | Seat: 15
+-----------------------------------
+Ticket ID: 1036
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: mohan | Age: 23 | Seat: 2
+Name: mahn | Age: 23 | Seat: 16
+-----------------------------------
+Ticket ID: 1038
+Bus No: 811
+Passengers: 1
+Total Fare: 900
+Name: disha | Age: 12 | Seat: 3
+-----------------------------------
