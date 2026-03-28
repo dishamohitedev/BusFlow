@@ -239,3 +239,11 @@ Total Fare: 2200
 Name: mioga | Age: 23 | Seat: 6
 Name: ghahu | Age: 1211 | Seat: 7
 -----------------------------------
+Ticket ID: 1030
+Bus No: 811
+Passengers: 3
+Total Fare: 2700
+Name: disha  | Age: 23 | Seat: 9
+Name: ovi | Age: 18 | Seat: 10
+Name: vaishal | Age: 34 | Seat: 11
+-----------------------------------
