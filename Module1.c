@@ -647,6 +647,14 @@ void bookingCompletionDisplay()
     printf("\nName       : %s", passengers[i].name);
     printf("\nAge        : %d", passengers[i].age);
     printf("\nSeat No.   : %d", allocatedSeats[i]);
+    printf("\nCategory   : ");
+    if (passengers[i].disabled)   printf("Disabled ");
+    if (passengers[i].pregnant)   printf("Pregnant ");
+    if (passengers[i].emergency)  printf("Emergency ");
+    if (passengers[i].age >= 60)  printf("Senior Citizen ");
+    if (!passengers[i].disabled && !passengers[i].pregnant && 
+    !passengers[i].emergency && passengers[i].age < 60)
+      printf("Normal");
     printf("\n------------------------------------");
   }
   printf("\nTotal Passengers : %d", passengerCount);
@@ -724,6 +732,14 @@ void addToWaitingList(struct Passenger p)
   printf("\n      WAITING LIST CONFIRMATION");
   printf("\n====================================");
   printf("\nPassenger Name : %s", p.name);
+  printf("\nAge            : %d", p.age);
+  printf("\nCategory       : ");
+  if (p.disabled)   printf("Disabled ");
+  if (p.pregnant)   printf("Pregnant ");
+  if (p.emergency)  printf("Emergency ");
+  if (p.age >= 60)  printf("Senior Citizen ");
+  if (!p.disabled && !p.pregnant && !p.emergency && p.age < 60)
+    printf("Normal");
   printf("\nWaiting Number : WL %d", pos + 1);
   printf("\nStatus         : Waiting");
   printf("\n====================================\n");
@@ -843,7 +859,19 @@ void displayWaitingList()
   printf("\n====================================\n");
   for (int i = 0; i < waitingCount; i++)
   {
-    printf("WL %d -> %s | Age: %d\n", i + 1, waitingList[i].name, waitingList[i].age);
+    printf("WL %d -> %s | Age: %d | ", i + 1, waitingList[i].name, waitingList[i].age);
+    if (waitingList[i].disabled)
+      printf("Disabled ");
+    if (waitingList[i].pregnant)
+      printf("Pregnant ");
+    if (waitingList[i].emergency)
+      printf("Emergency ");
+    if (waitingList[i].age >= 60)
+      printf("Senior Citizen ");
+    if (!waitingList[i].disabled && !waitingList[i].pregnant && 
+    !waitingList[i].emergency && waitingList[i].age < 60)
+      printf("Normal");
+    printf("\n");
   }
   printf("====================================\n");
 }
