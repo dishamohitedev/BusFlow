@@ -247,3 +247,10 @@ Name: disha  | Age: 23 | Seat: 9
 Name: ovi | Age: 18 | Seat: 10
 Name: vaishal | Age: 34 | Seat: 11
 -----------------------------------
+Ticket ID: 1031
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: mohini | Age: 23 | Seat: 6
+Name: reva | Age: 23 | Seat: 12
+-----------------------------------
