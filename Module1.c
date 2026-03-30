@@ -895,30 +895,26 @@ void showSeatCount(int index)
 }
 void showSeatCategoryAvailability(int index)
 {
-    int disabled = 0, emergency = 0, pregnant = 0, senior = 0, normal = 0;
-
-    for (int i = 0; i < buses[index].totalseats; i++)
+  int disabled = 0, emergency = 0, pregnant = 0, senior = 0, normal = 0;
+  for (int i = 0; i < buses[index].totalseats; i++)
+  {
+    if (buses[index].seats[i] == 0) 
     {
-        if (buses[index].seats[i] == 0) // only vacant seats
-        {
-            if (i >= 0 && i <= 1) disabled++;       // seats 1-2
-            else if (i >= 2 && i <= 3) emergency++; // seats 3-4
-            else if (i >= 4 && i <= 5) pregnant++;  // seats 5-6
-            else if (i >= 6 && i <= 7) senior++;    // seats 7-8
-            else normal++;                          // 9+
-        }
+      if (i >= 0 && i <= 1) disabled++;       
+      else if (i >= 2 && i <= 3) emergency++; 
+      else if (i >= 4 && i <= 5) pregnant++;  
+      else if (i >= 6 && i <= 7) senior++;    
+      else normal++;                          
     }
-
+  }
     printf("\n====================================");
     printf("\n CATEGORY-WISE AVAILABILITY");
     printf("\n====================================");
-
     printf("\nDisabled Seats (1-2): %d", disabled);
     printf("\nEmergency Seats (3-4): %d", emergency);
     printf("\nPregnant Seats (5-6): %d", pregnant);
     printf("\nSenior Seats (7-8): %d", senior);
     printf("\nNormal Seats (9+): %d", normal);
-
     printf("\n====================================\n");
 }
 

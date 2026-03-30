@@ -281,3 +281,24 @@ Passengers: 1
 Total Fare: 900
 Name: disha | Age: 12 | Seat: 3
 -----------------------------------
+Ticket ID: 1039
+Bus No: 85
+Passengers: 2
+Total Fare: 2400
+Name: Aditi | Age: 19 | Seat: 17
+Name: Sara | Age: 18 | Seat: 18
+-----------------------------------
+Ticket ID: 1040
+Bus No: 563
+Passengers: 2
+Total Fare: 3600
+Name: Aditi | Age: 26 | Seat: 3
+Name: Rushikesh | Age: 24 | Seat: 1
+-----------------------------------
+Ticket ID: 1041
+Bus No: 563
+Passengers: 2
+Total Fare: 3600
+Name: sara | Age: 12 | Seat: 10
+Name: aayush | Age: 64 | Seat: 11
+-----------------------------------
